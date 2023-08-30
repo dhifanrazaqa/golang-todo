@@ -1,7 +1,14 @@
 package models
 
+import (
+	"time"
+)
+
 type Todo struct {
 	Id int
-	Item string
+	Title string
 	Completed int
+	Color string
+	Start time.Time
+	End time.Time
 }

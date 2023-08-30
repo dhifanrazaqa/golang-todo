@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	// "fmt"
+	"time"
 	"net/http"
 	"github.com/dhifanrazaqa/golang-todo/config"
 	"github.com/dhifanrazaqa/golang-todo/models"
@@ -11,8 +12,11 @@ import (
 
 var (
 	id        int
-	item      string
+	title     string
 	completed int
+	color			string
+	start 		time.Time
+	end 		time.Time
 	database  = config.Database()
 )
 
@@ -26,7 +30,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
 	var todos []models.Todo
 
 	for statement.Next() {
-		err = statement.Scan(&id, &item, &completed)
+		err = statement.Scan(&id, &title, &completed, &color, &start, &end)
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -34,8 +38,11 @@ func Show(w http.ResponseWriter, r *http.Request) {
 
 		todo := models.Todo{
 			Id:        id,
-			Item:      item,
+			Title:      title,
 			Completed: completed,
+			Color: color,
+			Start: start,
+			End: end,
 		}
 
 		todos = append(todos, todo)
@@ -47,6 +54,9 @@ func Show(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+  w.Header().Set("Access-Control-Allow-Methods", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(todoJson)
@@ -81,6 +91,9 @@ func Complete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+  w.Header().Set("Access-Control-Allow-Methods", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(`{"message": "Todo Complete!"}`))

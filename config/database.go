@@ -53,15 +53,18 @@ func Database() *sql.DB{
 	// _, err = database.Exec(`
 	// 	CREATE TABLE todos (
 	// 	id INT AUTO_INCREMENT,
-	// 	item TEXT NOT NULL,
+	// 	title TEXT NOT NULL,
 	// 	completed BOOLEAN DEFAULT FALSE,
+	// 	color VARCHAR(10),
+	// 	start DATETIME,
+	// 	end DATETIME,
 	// 	PRIMARY KEY (id)
 	// 	);
 	// `)
 
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	return database
 }
