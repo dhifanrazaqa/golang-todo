@@ -19,9 +19,15 @@ func main() {
 		log.Fatal("PORT not set in .env")
 	}
 
+	http.HandleFunc("/favicon.ico", handlerICon) 
+  http.HandleFunc("/", handler) 
 	err := http.ListenAndServe("localhost:"+port, routes.Init())
 
 	if err != nil {
 		log.Fatal(err)
 	}
 }
+
+func handler(w http.ResponseWriter, r *http.Request) {}
+	
+func handlerICon(w http.ResponseWriter, r *http.Request) {}
